@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t tashfik/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true tashfik/react-test npm test
+
+after_success:
+    - docker build -t tashfik/multi-client ./client
+    - docker build -t tashfik/multi-nginx ./nginx
+    - docker build -t tashfik/multi-server ./server
+    - docker build -t tashfik/multi-worker ./worker
+    # Log in to the docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Take those images and push them to docker hub
+    - docker push tashfik/multi-client
+    - docker push tashfik/multi-nginx
+    - docker push tashfik/multi-server
+    - docker push tashfik/multi-worker
