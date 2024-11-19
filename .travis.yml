@@ -14,6 +14,7 @@ after_success:
     - docker build -t tashfik/multi-server ./server
     - docker build -t tashfik/multi-worker ./worker
     # Log in to the docker CLI
+    # It will take the password and pass it to the command that is coming after the pipe
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
     # Take those images and push them to docker hub
     - docker push tashfik/multi-client
