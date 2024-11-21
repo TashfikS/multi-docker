@@ -1,0 +1,39 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "client",
+      "image": "tashfik/multi-client",
+      "hostname": "client",
+      "essential": false
+    },
+    {
+      "name": "server",
+      "image": "tashfik/multi-server",
+      "hostname": "api",
+      "essential": false
+    },
+    {
+      "name": "worker",
+      "image": "tashfik/multi-worker",
+      "hostname": "worker",
+      "essential": false
+    },
+    {
+      "name": "nginx",
+      "image": "tashfik/multi-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings": [
+          {
+          "hostPort": 80,
+          "containerPort": 80
+          }
+      ],
+      "links": [
+          "client",
+          "server"
+      ]
+    }
+  ]
+}
